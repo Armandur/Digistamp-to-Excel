@@ -5,6 +5,7 @@ import os
 from enum import Enum
 from datetime import date, datetime, timedelta
 import copy
+from glob import glob
 
 Digistamps = []
 
@@ -65,7 +66,6 @@ def process_input(filename):
 		i += 1
 
 	while i < len(text):
-
 		stamp = Digistamp()
 		if "mottagarens namn och adress" in text[i]:
 			# At end of codes
@@ -75,7 +75,7 @@ def process_input(filename):
 		if len(text[i+1]) == 4:
 			stamp.rows[0] = text[i+1]
 		if len(text[i+2]) == 4:
-			stamp.rows[1] = text[i+1]
+			stamp.rows[1] = text[i+2]
 		if ' g' in text[i+3]:
 #			print("Found row with type of postage")
 			stamp.rows[2] = text[i+3][0:4]
@@ -112,7 +112,7 @@ def process_input(filename):
 			
 			Digistamps.append(copy.deepcopy(stamp))
 			
-			i+=4
+			i += 4
 			continue
 		i += 1
 
@@ -134,14 +134,16 @@ def write_output(digistamps):
 	pprint(df)
 	df.to_excel(file, index=False)
 	
+pdfs = glob(os.path.join(os.getcwd(), "*.pdf"))
+for pdf in pdfs:
+	process_input(pdf)
 
-process_input(os.path.join(os.getcwd(), "pdf\Digitalt_frimarke_SBDW558E1207F52J.pdf"))
-process_input(os.path.join(os.getcwd(), "pdf\Digitalt_frimarke_SBD7SWPW83E336FW.pdf"))
-
-for stamp in Digistamps:
-	print(stamp)
+#for stamp in Digistamps:
+	#print(stamp)
 
 write_output(Digistamps)
+
+pprint(f"Processed {len(Digistamps)} digistamsp from {len(pdfs)} pdfs.")
 
 # Find first row with Din kod
 # Start iterating and begin collecting rows for Digistamp
