@@ -143,7 +143,7 @@ for pdf in pdfs:
 
 write_output(Digistamps)
 
-pprint(f"Processed {len(Digistamps)} digistamsp from {len(pdfs)} pdfs.")
+pprint(f"Processed {len(Digistamps)} digistamps from {len(pdfs)} pdfs.")
 
 # TODO Add filename to each instance of Digistamp, add that to column in output, as well as ID - first, second, third digistamp etc
 
